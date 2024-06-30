@@ -65,18 +65,19 @@ class SpeedTest
     }
 
     public function sendDiscordNotification($message) {
+        ini_set('log_errors', 'On');
+        ini_set('error_log', dirname(__DIR__) . '/error.log');
         try {
             $response = $this->client->post($this->discordWebhookUrl, [
                 'json' => ['content' => $message]
             ]);
 
             if ($response->getStatusCode() === 204) {
-                echo "Success";
             } else {
-                echo "Error - " . $response->getStatusCode() . "\n";
+                error_log("Error - " . $response->getStatusCode());
             }
         } catch (\Exception $e) {
-            echo "Error - " . $e->getMessage() . "\n";
+            error_log("Error - " . $e->getMessage());
         }
     }
 }
